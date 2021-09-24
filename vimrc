@@ -1,73 +1,16 @@
 " vim: foldmethod=marker
 " Author: Ethan Rietz
-" Date: 0 A.D.
-" Description: Filetype, plugin, and compiler settings are loaded elsewhere
-
-let g:windows = has('win32') || has('win64')
-let g:mac = has('mac')
-let g:unix = has('unix')
+" Date: Thu Sep 23 06:30:18 PDT 2021
+" Description: A minimal curl-able vimrc
 
 " {{{ Plugins
 
-" The default plugin directories can be found with the command 
-" :echo stdpath('data')
+" nothing here since this is minimal... ;(
 
-if g:windows
-  let s:plugin_dir = '~/vimfiles/plugged'
-
-  " " Change the shell to using git-bash
-  " " TODO: what if I want to use nvim from powershell for some reason????
-  " let &shell='bash.exe'
-  " let &shellcmdflag = '-c'
-  " let &shellredir = '>%s 2>&1'
-  " set shellquote= shellxescape=
-  " " set noshelltemp
-  " set shellxquote=
-  " let &shellpipe='2>&1| tee'
-  " let $TMP="/tmp"
-
-else
-  let s:plugin_dir = '~/.vim/plugged'
-endif
-
-call plug#begin(s:plugin_dir)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-markdown'
-Plug 'mbbill/undotree'
-Plug 'puremourning/vimspector'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/goyo.vim', { 'for': ['markdown', 'pandoc'] }
-autocmd! User goyo.vim echom 'Goyo is now loaded!'
-Plug 'dhruvasagar/vim-table-mode'
-"Plug 'SirVer/ultisnips'
-" Language support
-Plug 'sheerun/vim-polyglot'
-Plug 'euclidianAce/BetterLua.vim'
-Plug 'lervag/vimtex'
-Plug 'kevinoid/vim-jsonc'
-"Plug 'vimwiki/vimwiki'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'ap/vim-css-color'
-" My plugins
-Plug 'erietz/vim-terminator'
-Plug 'erietz/vim-doconce'
-Plug 'erietz/vim-todo'
-" Colorschemes
-Plug 'flazz/vim-colorschemes'
-Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
-call plug#end()
 " }}}
 " {{{ Options
 
-set tabstop=2 shiftwidth=2 expandtab smarttab
+set tabstop=4 shiftwidth=4 expandtab smarttab
 set guicursor=
 set number
 set relativenumber
@@ -83,7 +26,6 @@ set noswapfile
 set undodir=~/.config/nvim/undodir/
 set undofile
 set spellfile=~/.config/nvim/spell/en.utf-8.add
-set termguicolors
 set scrolloff=8
 set colorcolumn=80
 set backspace=indent,eol,start
@@ -154,13 +96,15 @@ nnoremap <leader>dv :Lex<bar>set winfixwidth<CR>
 nnoremap <leader>- 80A-<esc>81<bar>d$_<cr>
 nnoremap <leader>_ 50A-<esc>51<bar>d$_<cr>
 
-" Terminal mappings
-tnoremap <leader><Esc> <c-\><c-n>
-tnoremap <Esc><Esc> <c-\><c-n>
-tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
+if has('terminal')
+    " Terminal mappings
+    tnoremap <leader><Esc> <c-\><c-n>
+    tnoremap <Esc><Esc> <c-\><c-n>
+    tnoremap <C-h> <C-\><C-n><C-w>h
+    tnoremap <C-j> <C-\><C-n><C-w>j
+    tnoremap <C-k> <C-\><C-n><C-w>k
+    tnoremap <C-l> <C-\><C-n><C-w>l
+endif
 
 " Clean up whitespace
 function! TrimWhitespace()
@@ -192,9 +136,8 @@ endfunction
 " }}}
 " {{{ Colors
 
-set termguicolors
+"set termguicolors  " does not work on old vim
 set background=dark
-colorscheme gruvbox
+colorscheme desert
 
 " }}}
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
