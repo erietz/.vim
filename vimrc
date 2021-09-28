@@ -41,10 +41,13 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
     "   \   'grep -R -n -- '.shellescape(<q-args>), 1,
     "   \   fzf#vim#with_preview(), <bang>0)
 
-    nnoremap <leader>ff :GFiles<CR>
-    nnoremap <leader>fg :Rg<CR>
-    nnoremap <leader>gg :GGrep<CR>
-    nnoremap <leader>fb :Buffers<CR>
+    nnoremap <leader><CR> :Files<CR>
+    nnoremap <leader><leader> :Buffers<CR>
+    nnoremap <leader>rg :Rg<CR>
+    nnoremap <leader>df :Files ~/.ewr<CR>
+    nnoremap <leader>gf :GFiles<CR>
+    nnoremap <leader>gs :GFiles?<CR>
+    nnoremap <leader>gc :Commits<CR>
 
 else
     colorscheme pablo
