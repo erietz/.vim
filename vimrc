@@ -1,16 +1,62 @@
 " vim: foldmethod=marker
 " Author: Ethan Rietz
 " Date: Thu Sep 23 06:30:18 PDT 2021
-" Description: A minimal curl-able vimrc
+" Description: A minimal curl-able vimrc for working on remote systems
+
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+let g:vimsyn_embed = 'lPr'
+set background=dark
 
 " {{{ Plugins
+if filereadable(expand("~/.vim/autoload/plug.vim"))
+    call plug#begin('~/.local/share/vim/plugins')
+    " Plug 'sheerun/vim-polyglot'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-dispatch'
+    " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/vim-easy-align'
+    Plug 'morhetz/gruvbox'
+    call plug#end()
 
-" nothing here since this is minimal... ;(
+    colorscheme gruvbox
+
+    " vim-easy-align
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+
+    " diable fzf preview window
+    " let g:fzf_preview_window = []
+
+    " command! -bang -nargs=* GGrep
+    "   \ call fzf#vim#grep(
+    "   \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+    "   \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+    " command! -bang -nargs=* Rg
+    "   \ call fzf#vim#grep(
+    "   \   'grep -R -n -- '.shellescape(<q-args>), 1,
+    "   \   fzf#vim#with_preview(), <bang>0)
+
+    nnoremap <leader>ff :GFiles<CR>
+    nnoremap <leader>fg :Rg<CR>
+    nnoremap <leader>gg :GGrep<CR>
+    nnoremap <leader>fb :Buffers<CR>
+
+else
+    colorscheme pablo
+endif
+
 
 " }}}
 " {{{ Options
 
 set tabstop=4 shiftwidth=4 expandtab smarttab
+set autoindent
+set hidden
 set guicursor=
 set number
 set relativenumber
@@ -23,9 +69,8 @@ set mouse=i
 set nowrap
 set nobackup
 set noswapfile
-set undodir=~/.config/nvim/undodir/
+set undodir=~/.vim/undodir/
 set undofile
-set spellfile=~/.config/nvim/spell/en.utf-8.add
 set scrolloff=8
 set colorcolumn=80
 set backspace=indent,eol,start
@@ -35,12 +80,9 @@ set laststatus=2
 " see :h fo-table
 augroup DoNotOverrideMySettings
   au!
-  au FileType * setlocal formatoptions+=ron formatoptions-=c
+  au FileType * setlocal formatoptions+=ronc " formatoptions-=c
 augroup end
 
-let g:mapleader = "\<Space>"
-let g:maplocalleader = ','
-let g:vimsyn_embed = 'lPr'
 " }}}
 " {{{ Mappings
 
@@ -77,10 +119,10 @@ nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
 " Native grep better than plugins
-command! -nargs=+ -complete=file Grep execute 'silent lgrep! <args>' | lopen
-command! -nargs=+ VimGrep execute 'silent lvimgrep! <q-args>' . '**/*' | lopen
-nnoremap <leader>gg :Grep 
-nnoremap <leader>vg :VimGrep 
+" command! -nargs=+ -complete=file Grep execute 'silent lgrep! <args>' | lopen
+" command! -nargs=+ VimGrep execute 'silent lvimgrep! <q-args>' . '**/*' | lopen
+" nnoremap <leader>gg :Grep 
+" nnoremap <leader>vg :VimGrep 
 
 " Resize windows
 nnoremap <Left> :vertical resize -2<CR>
@@ -133,11 +175,12 @@ function Retab()
   retab
 endfunction
 
-" }}}
-" {{{ Colors
-
-"set termguicolors  " does not work on old vim
-set background=dark
-colorscheme desert
+function About()
+    let date = system('date +%F')
+    echo date
+    " execute "normal A Author        : Ethan Rietz"
+    " execute "normal A Date          : " .. date
+    " execute "normal A Description   : "
+endfunction
 
 " }}}
